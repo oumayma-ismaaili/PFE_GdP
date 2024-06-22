@@ -1,5 +1,6 @@
 import logo from "../assets/logo.png";
 import background from "../assets/background.jpg";
+import aulsh from "../assets/aulsh.jpg";
 import githubLogo from "../assets/github-logo.png";
 import googleLogo from "../assets/google-logo.png";
 import { Link } from "react-router-dom";
@@ -155,7 +156,7 @@ export default function SignInPage() {
         <div className="relative hidden w-0 flex-1 lg:block">
           <img
             className="absolute inset-0 h-full w-full object-cover"
-            src={background}
+            src={aulsh}
             alt=""
           />
         </div>

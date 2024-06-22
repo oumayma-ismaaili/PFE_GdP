@@ -1,11 +1,28 @@
+import React, { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
-import background from "../assets/background.jpg";
 import aulsh from "../assets/aulsh.jpg";
-import githubLogo from "../assets/github-logo.png";
-import googleLogo from "../assets/google-logo.png";
-import { Link } from "react-router-dom";
+import { UserAuthContext } from "../App";
+import { fetchUser } from "../functions/fechUser";
 
 export default function SignInPage() {
+  const { user, setUser } = useContext(UserAuthContext);
+  const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  const handleLogin = async (event) => {
+    event.preventDefault();
+    await fetchUser(setLoading, setUser, email, password);
+  };
+
+  useEffect(() => {
+    if (user) {
+      navigate("/dashboard");
+    }
+  }, [user, navigate]);
+
   return (
     <>
       <div className="flex h-screen w-screen flex-1">
@@ -14,7 +31,7 @@ export default function SignInPage() {
             <div>
               <img className="h-10 w-auto" src={logo} alt="Your Company" />
               <h2 className="mt-8 text-2xl font-bold leading-9 tracking-tight text-gray-900">
-                Sign in to your account test vercel
+                Sign in to your account
               </h2>
               <p className="mt-2 text-sm leading-6 text-gray-500">
                 Not a member?{" "}
@@ -29,7 +46,7 @@ export default function SignInPage() {
 
             <div className="mt-10">
               <div>
-                <form action="#" method="POST" className="space-y-6">
+                <form onSubmit={handleLogin} className="space-y-6">
                   <div>
                     <label
                       htmlFor="email"
@@ -43,6 +60,8 @@ export default function SignInPage() {
                         name="email"
                         type="email"
                         autoComplete="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                         required
                         className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6"
                       />
@@ -62,6 +81,8 @@ export default function SignInPage() {
                         name="password"
                         type="password"
                         autoComplete="current-password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                         required
                         className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6"
                       />
@@ -95,60 +116,15 @@ export default function SignInPage() {
                   </div>
 
                   <div>
-                    <Link
-                      to="/dashboard"
+                    <button
+                      type="submit"
                       className="flex w-full justify-center rounded-md bg-violet-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-violet-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-600"
+                      disabled={loading}
                     >
-                      Sign in
-                    </Link>
+                      {loading ? "Signing in..." : "Sign in"}
+                    </button>
                   </div>
                 </form>
-              </div>
-
-              <div className="mt-10">
-                <div className="relative">
-                  <div
-                    className="absolute inset-0 flex items-center"
-                    aria-hidden="true"
-                  >
-                    <div className="w-full border-t border-gray-200" />
-                  </div>
-                  <div className="relative flex justify-center text-sm font-medium leading-6">
-                    <span className="bg-white px-6 text-gray-900">
-                      Or continue with
-                    </span>
-                  </div>
-                </div>
-
-                <div className="mt-6 grid grid-cols-2 gap-4">
-                  <a
-                    href="#"
-                    className="flex w-full justify-center gap-3 items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2"
-                  >
-                    <img
-                      src={googleLogo}
-                      alt="github-logo"
-                      className="h-5 w-5"
-                    />
-                    <span className="text-sm font-semibold leading-6">
-                      Google
-                    </span>
-                  </a>
-
-                  <a
-                    href="#"
-                    className="flex w-full justify-center gap-3 items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2"
-                  >
-                    <img
-                      src={githubLogo}
-                      alt="github-logo"
-                      className="h-5 w-5"
-                    />
-                    <span className="text-sm font-semibold leading-6">
-                      Github
-                    </span>
-                  </a>
-                </div>
               </div>
             </div>
           </div>

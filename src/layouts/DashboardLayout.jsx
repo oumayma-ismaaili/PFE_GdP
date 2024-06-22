@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useContext, useEffect } from "react";
 import {
   Menu,
   MenuButton,
@@ -12,14 +12,15 @@ import {
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import logo from "../assets/logo.png";
-import { Link, Outlet, useLocation } from "react-router-dom";
+import {
+  Link,
+  Outlet,
+  useLocation,
+  useNavigate,
+  useNavigation,
+} from "react-router-dom";
+import { UserAuthContext } from "../App";
 
-const user = {
-  name: "Tom Cook",
-  email: "tom@example.com",
-  imageUrl:
-    "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
-};
 const navigation = [
   { name: "Home", href: "/dashboard" },
   { name: "Profile", href: "/dashboard/profile" },
@@ -76,8 +77,16 @@ function classNames(...classes) {
 }
 
 export default function DashboardLayou() {
+  const { user } = useContext(UserAuthContext);
   const location = useLocation();
   const current = location.pathname;
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user) {
+      navigate("/");
+    }
+  }, [user, navigate]);
 
   return (
     <>
@@ -118,7 +127,7 @@ export default function DashboardLayou() {
                           <span className="sr-only">Open user menu</span>
                           <img
                             className="h-8 w-8 rounded-full"
-                            src={user.imageUrl}
+                            src={user?.profile_img}
                             alt=""
                           />
                         </MenuButton>
@@ -305,16 +314,16 @@ export default function DashboardLayou() {
                             <div className="flex-shrink-0">
                               <img
                                 className="h-10 w-10 rounded-full"
-                                src={user.imageUrl}
+                                src={user?.profile_img}
                                 alt=""
                               />
                             </div>
                             <div className="ml-3 min-w-0 flex-1">
                               <div className="truncate text-base font-medium text-gray-800">
-                                {user.name}
+                                {user?.first_name}{" "}{user?.last_name}
                               </div>
                               <div className="truncate text-sm font-medium text-gray-500">
-                                {user.email}
+                                {user?.email}
                               </div>
                             </div>
                             <button

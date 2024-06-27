@@ -3,25 +3,41 @@ import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
 import aulsh from "../assets/aulsh.jpg";
 import { UserAuthContext } from "../App";
-import { fetchUser } from "../functions/fechUser";
+import { fetchUser } from "../functions/fetchUser";
 
 export default function SignInPage() {
   const { user, setUser } = useContext(UserAuthContext);
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [inputError, setInputError] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = async (event) => {
     event.preventDefault();
-    await fetchUser(setLoading, setUser, email, password);
+    const error = await fetchUser(setLoading, setUser, email, password);
+    if (error) {
+      setError(error);
+      if (error.includes("Incorrect email or password")) {
+        setInputError(true);
+      } else {
+        setInputError(false);
+      }
+    } else {
+      setInputError(false);
+    }
   };
 
   useEffect(() => {
     if (user) {
       navigate("/dashboard");
     }
-  }, [user, navigate]);
+
+    if (error) {
+      console.log(error);
+    }
+  }, [error, user, navigate]);
 
   return (
     <>
@@ -63,7 +79,11 @@ export default function SignInPage() {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
-                        className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6"
+                        className={`block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 ${
+                          inputError
+                            ? "ring-red-500"
+                            : "ring-gray-300 focus:ring-violet-600"
+                        }`}
                       />
                     </div>
                   </div>
@@ -84,7 +104,11 @@ export default function SignInPage() {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
-                        className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-violet-600 sm:text-sm sm:leading-6"
+                        className={`block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 ${
+                          inputError
+                            ? "ring-red-500"
+                            : "ring-gray-300 focus:ring-violet-600"
+                        }`}
                       />
                     </div>
                   </div>
@@ -121,8 +145,22 @@ export default function SignInPage() {
                       className="flex w-full justify-center rounded-md bg-violet-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-violet-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-600"
                       disabled={loading}
                     >
-                      {loading ? "Signing in..." : "Sign in"}
+                      {loading ? (
+                        <svg id="svg" className="h-6 w-6" viewBox="25 25 50 50">
+                          <circle id="circle" r="20" cy="50" cx="50"></circle>
+                        </svg>
+                      ) : (
+                        "Sign in"
+                      )}
                     </button>
+                  </div>
+
+                  <div className="relative w-full h-8 mt-8">
+                    {error && (
+                      <div className="text-sm text-white font-semibold mt-4 text-center bg-red-600 py-4 rounded-lg">
+                        {error}
+                      </div>
+                    )}
                   </div>
                 </form>
               </div>

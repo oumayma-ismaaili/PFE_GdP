@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import ChangeProfile from "../components/add_new_user/ChangeProfile";
 import { personalInfoFields } from "../data/add_new_user";
 import { supabase } from "../config/supabase/supabaseClient";
+import AlertLayout from "../layouts/AlertLayouts";
+import { alertInfos } from "../data/AlertInfo";
+import { Link } from "react-router-dom";
 
 const roleOptions = [
   { id: "admin", label: "Admin" },
@@ -9,14 +12,20 @@ const roleOptions = [
   { id: "manager", label: "Manager" },
 ];
 
-export default function AddNewUser() {
-  const [formValues, setFormValues] = useState({
-    tasks: 0,
-    projects_integrated: 0,
-    projects_completed: 0,
-  });
+const initialFormValues = {
+  tasks: 0,
+  projects_integrated: 0,
+  projects_completed: 0,
+  birth_date: "",
+  role: "",
+  // Add any other fields you have here
+};
 
+export default function AddNewUser() {
+  const [formValues, setFormValues] = useState(initialFormValues);
   const [profileImg, setProfileImg] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [showAlert, setShowAlert] = useState(null);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -28,12 +37,13 @@ export default function AddNewUser() {
 
   useEffect(() => {
     if (profileImg) {
-      setFormValues({ ...formValues, ["profile_img"]: profileImg });
+      setFormValues({ ...formValues, profile_img: profileImg });
     }
   }, [profileImg]);
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     console.log("Form values:", formValues);
 
     // Insert the new user into the Supabase database
@@ -41,13 +51,34 @@ export default function AddNewUser() {
 
     if (error) {
       console.error("Error inserting data:", error);
+      setShowAlert("error");
     } else {
       console.log("User added successfully:", data);
+      setShowAlert("saved");
     }
+    setLoading(false);
+  };
+
+  const handleReset = () => {
+    setFormValues(initialFormValues);
+    setProfileImg(null);
   };
 
   return (
     <div className="mx-auto container px-4 sm:px-6 lg:px-8 shadow rounded-md bg-white dark:bg-gray-900 py-12">
+      <div className="w-full fixed top-0 left-0">
+        <AlertLayout
+          data={
+            showAlert == "error"
+              ? alertInfos.error
+              : showAlert == "saved"
+              ? alertInfos.saved
+              : {}
+          }
+          setShowAlert={setShowAlert}
+          showAlert={showAlert}
+        />
+      </div>
       <form
         className="space-y-8 divide-y divide-gray-200 dark:divide-gray-700"
         onSubmit={handleFormSubmit}
@@ -86,6 +117,7 @@ export default function AddNewUser() {
                       autoComplete={field.autoComplete}
                       className="block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
                       onChange={handleInputChange}
+                      value={formValues[field.name] || ""}
                     />
                   </div>
                 </div>
@@ -104,6 +136,7 @@ export default function AddNewUser() {
                     id="birthdate"
                     className="block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
                     onChange={handleInputChange}
+                    value={formValues.birth_date}
                   />
                 </div>
               </div>
@@ -118,9 +151,9 @@ export default function AddNewUser() {
                   <select
                     id="role"
                     name="role"
-                    className="mt-1 block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+                    className="mt-1 block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
                     onChange={handleInputChange}
-                    defaultValue=""
+                    value={formValues.role}
                   >
                     <option value="" disabled>
                       Select a role
@@ -139,17 +172,24 @@ export default function AddNewUser() {
 
         <div className="pt-5">
           <div className="flex justify-end">
-            <button
-              type="button"
+            <Link
+              to="/dashboard/users"
               className="rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2"
+              onClick={handleReset}
             >
               Cancel
-            </button>
+            </Link>
             <button
               type="submit"
               className="ml-3 inline-flex justify-center rounded-md border border-transparent bg-violet-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2"
             >
-              Save
+              {loading ? (
+                <svg id="svg" className="h-5 w-5" viewBox="25 25 50 50">
+                  <circle id="circle" r="20" cy="50" cx="50"></circle>
+                </svg>
+              ) : (
+                "Save"
+              )}
             </button>
           </div>
         </div>

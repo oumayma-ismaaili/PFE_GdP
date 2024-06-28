@@ -13,6 +13,13 @@ export const personalInfoFields = [
     type: "text",
     autoComplete: "family-name",
   },
+  {
+    label: "City",
+    id: "city",
+    name: "city",
+    type: "text",
+    autoComplete: "city",
+  },
   { label: "Position", id: "position", name: "user_position", type: "text" },
   {
     label: "Email address",

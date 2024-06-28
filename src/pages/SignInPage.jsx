@@ -6,8 +6,8 @@ import { UserAuthContext } from "../App";
 import { fetchUser } from "../functions/fetchUser";
 
 export default function SignInPage() {
-  const { user, setUser } = useContext(UserAuthContext);
-  const [loading, setLoading] = useState(false);
+  const { user, setUser, loading, setLoading } = useContext(UserAuthContext);
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");

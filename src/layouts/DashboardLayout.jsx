@@ -12,26 +12,20 @@ import {
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import logo from "../assets/logo.png";
-import {
-  Link,
-  Outlet,
-  useLocation,
-  useNavigate,
-  useNavigation,
-} from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { UserAuthContext } from "../App";
 
 const navigation = [
   { name: "Home", href: "/dashboard" },
   { name: "Profile", href: "/dashboard/profile" },
-  { name: "Resources", href: "#" },
+  { name: "Add New User", href: "/dashboard/add_new_user" },
   { name: "Company Directory", href: "#" },
   { name: "Openings", href: "#" },
 ];
 const userNavigation = [
-  { name: "Your Profile", href: "#" },
-  { name: "Settings", href: "#" },
-  { name: "Sign out", href: "#" },
+  { name: "Your Profile", to: "/dashboard/profile" },
+  { name: "Settings", to: "#" },
+  { name: "Sign out", href: "/" },
 ];
 
 export const announcements = [
@@ -81,6 +75,9 @@ export default function DashboardLayou() {
   const location = useLocation();
   const current = location.pathname;
   const navigate = useNavigate();
+  const removeRightCol = ["/dashboard/add_new_user"].find(
+    (path) => current == path
+  );
 
   // useEffect(() => {
   //   if (!user) {
@@ -141,17 +138,29 @@ export default function DashboardLayou() {
                         <MenuItems className="absolute -right-2 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                           {userNavigation.map((item) => (
                             <MenuItem key={item.name}>
-                              {({ active }) => (
-                                <a
-                                  href={item.href}
-                                  className={classNames(
-                                    active ? "bg-gray-100" : "",
-                                    "block px-4 py-2 text-sm text-gray-700"
-                                  )}
-                                >
-                                  {item.name}
-                                </a>
-                              )}
+                              {({ active }) =>
+                                item.to ? (
+                                  <Link
+                                    href={item.to}
+                                    className={classNames(
+                                      active ? "bg-gray-100" : "",
+                                      "block px-4 py-2 text-sm text-gray-700"
+                                    )}
+                                  >
+                                    {item.name}
+                                  </Link>
+                                ) : (
+                                  <a
+                                    href={item.href}
+                                    className={classNames(
+                                      active ? "bg-gray-100" : "",
+                                      "block px-4 py-2 text-sm text-gray-700"
+                                    )}
+                                  >
+                                    {item.name}
+                                  </a>
+                                )
+                              }
                             </MenuItem>
                           ))}
                         </MenuItems>
@@ -320,7 +329,7 @@ export default function DashboardLayou() {
                             </div>
                             <div className="ml-3 min-w-0 flex-1">
                               <div className="truncate text-base font-medium text-gray-800">
-                                {user?.first_name}{" "}{user?.last_name}
+                                {user?.first_name} {user?.last_name}
                               </div>
                               <div className="truncate text-sm font-medium text-gray-500">
                                 {user?.email}
@@ -341,15 +350,25 @@ export default function DashboardLayou() {
                             </button>
                           </div>
                           <div className="mt-3 space-y-1 px-2">
-                            {userNavigation.map((item) => (
-                              <a
-                                key={item.name}
-                                href={item.href}
-                                className="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-100 hover:text-gray-800"
-                              >
-                                {item.name}
-                              </a>
-                            ))}
+                            {userNavigation.map((item) =>
+                              item.to ? (
+                                <Link
+                                  key={item.name}
+                                  href={item.to}
+                                  className="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-100 hover:text-gray-800"
+                                >
+                                  {item.name}
+                                </Link>
+                              ) : (
+                                <a
+                                  key={item.name}
+                                  href={item.href}
+                                  className="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-100 hover:text-gray-800"
+                                >
+                                  {item.name}
+                                </a>
+                              )
+                            )}
                           </div>
                         </div>
                       </div>
@@ -366,7 +385,11 @@ export default function DashboardLayou() {
             {/* Main 3 column grid */}
             <div className="grid grid-cols-1 items-start gap-4 lg:grid-cols-3 lg:gap-8">
               {/* Left column */}
-              <div className="grid grid-cols-1 gap-4 lg:col-span-2">
+              <div
+                className={`grid grid-cols-1 gap-4 ${
+                  !removeRightCol ? "lg:col-span-2" : "lg:col-span-3"
+                }`}
+              >
                 <section aria-labelledby="section-1-title">
                   <h2 className="sr-only" id="section-1-title">
                     Section title
@@ -380,58 +403,60 @@ export default function DashboardLayou() {
               </div>
 
               {/* Right column */}
-              <div className="grid grid-cols-1 gap-4 lg:pr-8 pr-4">
-                {/* Announcements */}
-                <section aria-labelledby="announcements-title">
-                  <div className="overflow-hidden rounded-lg bg-white shadow">
-                    <div className="p-6">
-                      <h2
-                        className="text-base font-medium text-gray-900"
-                        id="announcements-title"
-                      >
-                        Announcements
-                      </h2>
-                      <div className="mt-6 flow-root">
-                        <ul
-                          role="list"
-                          className="-my-5 divide-y divide-gray-200"
+              {!removeRightCol && (
+                <div className="grid grid-cols-1 gap-4 lg:pr-8 pr-4">
+                  {/* Announcements */}
+                  <section aria-labelledby="announcements-title">
+                    <div className="overflow-hidden rounded-lg bg-white shadow">
+                      <div className="p-6">
+                        <h2
+                          className="text-base font-medium text-gray-900"
+                          id="announcements-title"
                         >
-                          {announcements.map((announcement) => (
-                            <li key={announcement.id} className="py-5">
-                              <div className="relative focus-within:ring-2 focus-within:ring-cyan-500">
-                                <h3 className="text-sm font-semibold text-gray-800">
-                                  <a
-                                    href={announcement.href}
-                                    className="hover:underline focus:outline-none"
-                                  >
-                                    {/* Extend touch target to entire panel */}
-                                    <span
-                                      className="absolute inset-0"
-                                      aria-hidden="true"
-                                    />
-                                    {announcement.title}
-                                  </a>
-                                </h3>
-                                <p className="mt-1 text-sm text-gray-600 line-clamp-2">
-                                  {announcement.preview}
-                                </p>
-                              </div>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                      <div className="mt-6">
-                        <a
-                          href="#"
-                          className="flex w-full items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50"
-                        >
-                          View all
-                        </a>
+                          Announcements
+                        </h2>
+                        <div className="mt-6 flow-root">
+                          <ul
+                            role="list"
+                            className="-my-5 divide-y divide-gray-200"
+                          >
+                            {announcements.map((announcement) => (
+                              <li key={announcement.id} className="py-5">
+                                <div className="relative focus-within:ring-2 focus-within:ring-cyan-500">
+                                  <h3 className="text-sm font-semibold text-gray-800">
+                                    <a
+                                      href={announcement.href}
+                                      className="hover:underline focus:outline-none"
+                                    >
+                                      {/* Extend touch target to entire panel */}
+                                      <span
+                                        className="absolute inset-0"
+                                        aria-hidden="true"
+                                      />
+                                      {announcement.title}
+                                    </a>
+                                  </h3>
+                                  <p className="mt-1 text-sm text-gray-600 line-clamp-2">
+                                    {announcement.preview}
+                                  </p>
+                                </div>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                        <div className="mt-6">
+                          <a
+                            href="#"
+                            className="flex w-full items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50"
+                          >
+                            View all
+                          </a>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </section>
-              </div>
+                  </section>
+                </div>
+              )}
             </div>
           </div>
         </main>

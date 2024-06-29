@@ -2,7 +2,7 @@ export const navigation = [
   { name: "Home", href: "/dashboard" },
   { name: "Profile", href: "/dashboard/profile" },
   { name: "Users", href: "/dashboard/users" },
-  { name: "Projects", href: "/dashboard/projects/add_new_project" },
+  { name: "Projects", href: "/dashboard/projects" },
   { name: "Openings", href: "#" },
 ];
 export const userNavigation = [

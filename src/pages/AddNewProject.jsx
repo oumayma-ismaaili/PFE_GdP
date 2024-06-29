@@ -4,9 +4,10 @@ import { FaGithub } from "react-icons/fa";
 import { FaRegFolderOpen } from "react-icons/fa6";
 import { UserAuthContext } from "../App";
 import { supabase } from "../config/supabase/supabaseClient";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 import AlertLayout from "../layouts/AlertLayouts";
 import { alertInfos } from "../data/AlertInfo";
+import { Link } from "react-router-dom";
 
 export default function AddNewProject() {
   const { user } = useContext(UserAuthContext);
@@ -22,16 +23,13 @@ export default function AddNewProject() {
   const generateUniqueProjectId = async () => {
     let uniqueId = uuidv4();
     let { data } = await supabase
-      .from('projects')
-      .select('id')
-      .eq('id', uniqueId);
+      .from("projects")
+      .select("id")
+      .eq("id", uniqueId);
 
     while (data && data.length > 0) {
       uniqueId = uuidv4();
-      data = await supabase
-        .from('projects')
-        .select('id')
-        .eq('id', uniqueId);
+      data = await supabase.from("projects").select("id").eq("id", uniqueId);
     }
 
     return uniqueId;
@@ -66,7 +64,7 @@ export default function AddNewProject() {
 
     // Save to Supabase
     const { data, error } = await supabase
-      .from('projects')
+      .from("projects")
       .insert([projectData]);
 
     if (error) {
@@ -82,9 +80,9 @@ export default function AddNewProject() {
     // Update projects_integrated and project_id fields for all team members
     for (let person of team) {
       const { data: userData, error: userError } = await supabase
-        .from('users')
-        .select('projects_integrated')
-        .eq('CIN', person.CIN)
+        .from("users")
+        .select("projects_integrated")
+        .eq("CIN", person.CIN)
         .single();
 
       if (userError) {
@@ -95,12 +93,12 @@ export default function AddNewProject() {
       const newProjectsIntegrated = (userData.projects_integrated || 0) + 1;
 
       const { error: updateError } = await supabase
-        .from('users')
-        .update({ 
+        .from("users")
+        .update({
           projects_integrated: newProjectsIntegrated,
-          project_id: uniqueProjectId
+          project_id: uniqueProjectId,
         })
-        .eq('CIN', person.CIN);
+        .eq("CIN", person.CIN);
 
       if (updateError) {
         console.error("Error updating user data: ", updateError);
@@ -161,7 +159,7 @@ export default function AddNewProject() {
             <div>
               <label
                 htmlFor="repository-link"
-                className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
+                className="block text-sm pb-1 font-medium text-gray-700 sm:mt-px sm:pt-2"
               >
                 Repository Link
               </label>
@@ -184,7 +182,7 @@ export default function AddNewProject() {
             <div>
               <label
                 htmlFor="files-link"
-                className="block text-sm font-medium text-gray-700 sm:mt-px sm:pt-2"
+                className="block text-sm pb-1 font-medium text-gray-700 sm:mt-px sm:pt-2"
               >
                 Necessary Files Link
               </label>
@@ -291,18 +289,24 @@ export default function AddNewProject() {
             </div>
 
             <div className="flex justify-end">
-              <button
-                type="button"
+              <Link
+                to="/dashboard/projects"
                 className="rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2"
               >
                 Cancel
-              </button>
+              </Link>
               <button
                 type="submit"
                 className="ml-3 inline-flex justify-center rounded-md border border-transparent bg-violet-500 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-violet-600 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2"
                 disabled={isLoading}
               >
-                {isLoading ? "Creating..." : "Create this project"}
+                {isLoading ? (
+                  <svg id="svg" className="h-5 w-5" viewBox="25 25 50 50">
+                    <circle id="circle" r="20" cy="50" cx="50"></circle>
+                  </svg>
+                ) : (
+                  "Save"
+                )}
               </button>
             </div>
           </div>

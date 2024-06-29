@@ -1,6 +1,6 @@
 import React from "react";
 
-const TableBody = ({ users, handleDelete }) => {
+const TableBody = ({ users, handleDelete, role }) => {
   return (
     <>
       {users.map((user) => (
@@ -34,14 +34,16 @@ const TableBody = ({ users, handleDelete }) => {
           <td className="whitespace-nowrap capitalize px-3 py-4 text-sm text-gray-500">
             {user.role}
           </td>
-          <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-            <button
-              onClick={() => handleDelete(user.email)}
-              className="text-red-600 hover:text-red-900"
-            >
-              Delete<span className="sr-only">, {user.name}</span>
-            </button>
-          </td>
+          {role == "admin" && (
+            <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
+              <button
+                onClick={() => handleDelete(user.email)}
+                className="text-red-600 hover:text-red-900"
+              >
+                Delete<span className="sr-only">, {user.name}</span>
+              </button>
+            </td>
+          )}
         </tr>
       ))}
     </>

@@ -53,8 +53,6 @@ export default function Users() {
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  console.log(user?.role)
-
   return (
     <div className="px-4 sm:px-6 lg:px-8 bg-white py-12 rounded-lg shadow">
       <div className="sm:flex sm:items-center">
@@ -66,7 +64,7 @@ export default function Users() {
           </p>
         </div>
         <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-          {user?.role != "admin" && (
+          {user?.role === "admin" && (
             <Link
               to="/dashboard/users/add_new_user"
               className="inline-flex items-center justify-center rounded-md border border-transparent bg-violet-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 sm:w-auto"
@@ -125,7 +123,7 @@ export default function Users() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white">
-                  <TableBody users={currentUsers} handleDelete={handleDelete} />
+                  <TableBody users={currentUsers} handleDelete={handleDelete} role={user?.role} />
                 </tbody>
               </table>
             </div>

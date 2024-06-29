@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { supabase } from "../config/supabase/supabaseClient";
 import TableBody from "../components/users/TableBody";
 import Pagination from "../components/users/Pagination";
+import { UserAuthContext } from "../App";
 
 export default function Users() {
+  const { user } = useContext(UserAuthContext);
   const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
-  const [usersPerPage] = useState(1);
+  const [usersPerPage] = useState(10);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -51,6 +53,8 @@ export default function Users() {
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+  console.log(user?.role)
+
   return (
     <div className="px-4 sm:px-6 lg:px-8 bg-white py-12 rounded-lg shadow">
       <div className="sm:flex sm:items-center">
@@ -62,12 +66,14 @@ export default function Users() {
           </p>
         </div>
         <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-          <Link
-            to="/dashboard/users/add_new_user"
-            className="inline-flex items-center justify-center rounded-md border border-transparent bg-violet-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 sm:w-auto"
-          >
-            Add user
-          </Link>
+          {user?.role != "admin" && (
+            <Link
+              to="/dashboard/users/add_new_user"
+              className="inline-flex items-center justify-center rounded-md border border-transparent bg-violet-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 sm:w-auto"
+            >
+              Add user
+            </Link>
+          )}
         </div>
       </div>
       <div className="mt-4">

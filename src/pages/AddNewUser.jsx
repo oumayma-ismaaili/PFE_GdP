@@ -8,8 +8,8 @@ import { Link } from "react-router-dom";
 
 const roleOptions = [
   { id: "admin", label: "Admin" },
-  { id: "user", label: "User" },
-  { id: "manager", label: "Manager" },
+  { id: "Developer", label: "Developer" },
+  { id: "Leader", label: "Leader" },
 ];
 
 const initialFormValues = {
@@ -101,7 +101,7 @@ export default function AddNewUser() {
               {personalInfoFields.map((field) => (
                 <div
                   key={field.id}
-                  className="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:border-t sm:border-gray-200 dark:sm:border-gray-700 sm:pt-5"
+                  className="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:pt-5"
                 >
                   <label
                     htmlFor={field.id}
@@ -122,7 +122,7 @@ export default function AddNewUser() {
                   </div>
                 </div>
               ))}
-              <div className="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:border-t sm:border-gray-200 dark:sm:border-gray-700 sm:pt-5">
+              <div className="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:pt-5">
                 <label
                   htmlFor="birthdate"
                   className="block text-sm font-medium text-gray-700 dark:text-gray-300 sm:mt-px sm:pt-2"
@@ -140,7 +140,7 @@ export default function AddNewUser() {
                   />
                 </div>
               </div>
-              <div className="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:border-t sm:border-gray-200 dark:sm:border-gray-700 sm:pt-5">
+              <div className="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:pt-5">
                 <label
                   htmlFor="role"
                   className="block text-sm font-medium text-gray-700 dark:text-gray-300 sm:mt-px sm:pt-2"

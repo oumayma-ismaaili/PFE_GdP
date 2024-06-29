@@ -38,3 +38,15 @@
     stroke-dashoffset: -125px;
   }
 }
+
+.bg-mesh-gradient {
+  background-color: hsla(285, 100%, 13%, 1);
+  background-image: radial-gradient(
+      at 91% 11%,
+      hsla(245, 100%, 29%, 1) 0px,
+      transparent 50%
+    ),
+    radial-gradient(at 0% 100%, hsla(293, 100%, 50%, 1) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, hsla(315, 100%, 50%, 1) 0px, transparent 50%),
+    radial-gradient(at 48% 98%, hsla(264, 100%, 27%, 1) 0px, transparent 50%);
+}

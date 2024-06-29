@@ -24,7 +24,7 @@ const Navbar = ({ user }) => {
   const current = location.pathname;
 
   return (
-    <Popover as="header" className="bg-gray-950 pb-24">
+    <Popover as="header" className="bg-mesh-gradient pb-24">
       {({ open }) => (
         <>
           <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:container lg:px-8">
@@ -55,7 +55,7 @@ const Navbar = ({ user }) => {
                       <span className="absolute -inset-1.5" />
                       <span className="sr-only">Open user menu</span>
                       <img
-                        className="h-8 w-8 rounded-full"
+                        className="h-8 w-8 rounded-full object-cover"
                         src={user?.profile_img}
                         alt=""
                       />
@@ -245,7 +245,7 @@ const Navbar = ({ user }) => {
                       <div className="flex items-center px-5">
                         <div className="flex-shrink-0">
                           <img
-                            className="h-10 w-10 rounded-full"
+                            className="h-10 w-10 rounded-full object-cover"
                             src={user?.profile_img}
                             alt=""
                           />

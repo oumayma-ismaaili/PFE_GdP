@@ -6,6 +6,7 @@ import Profile from "./pages/Profile";
 import { createContext, useState } from "react";
 import AddNewUser from "./pages/AddNewUser";
 import Users from "./pages/Users";
+import AddNewProject from "./pages/AddNewProject";
 
 export const UserAuthContext = createContext();
 
@@ -22,6 +23,7 @@ const App = () => {
             <Route index element={<Home />} />
             <Route path="profile" element={<Profile />} />
             <Route path="users/add_new_user" element={<AddNewUser />} />
+            <Route path="projects/add_new_project" element={<AddNewProject/>} />
             <Route path="users" element={<Users />} />
           </Route>
         </Routes>

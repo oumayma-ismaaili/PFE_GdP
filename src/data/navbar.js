@@ -3,10 +3,9 @@ export const navigation = [
   { name: "Profile", href: "/dashboard/profile" },
   { name: "Users", href: "/dashboard/users" },
   { name: "Projects", href: "/dashboard/projects" },
-  { name: "Openings", href: "#" },
+  { name: "Analytics", href: "/dashboard/analytics" },
 ];
 export const userNavigation = [
   { name: "Your Profile", to: "/dashboard/profile" },
-  { name: "Settings", to: "#" },
   { name: "Sign out", href: "/" },
 ];

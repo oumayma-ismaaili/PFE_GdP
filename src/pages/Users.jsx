@@ -4,13 +4,21 @@ import { supabase } from "../config/supabase/supabaseClient";
 import TableBody from "../components/users/TableBody";
 import Pagination from "../components/users/Pagination";
 import { UserAuthContext } from "../App";
+import EditUser from "../components/users/EditUser";
 
 export default function Users() {
-  const { user } = useContext(UserAuthContext);
+  const { user, save} = useContext(UserAuthContext);
   const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [usersPerPage] = useState(10);
+  const [open, setOpen] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState(null);
+
+  const handleEdit = (userId) => {
+    setSelectedUserId(userId);
+    setOpen(true);
+  };
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -23,7 +31,7 @@ export default function Users() {
     };
 
     fetchUsers();
-  }, []);
+  }, [save]);
 
   const handleDelete = async (email) => {
     const { error } = await supabase.from("users").delete().eq("email", email);
@@ -55,6 +63,7 @@ export default function Users() {
 
   return (
     <div className="px-4 sm:px-6 lg:px-8 bg-white py-12 rounded-lg shadow">
+      <EditUser user_id={selectedUserId} open={open} setOpen={setOpen} />
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
           <h1 className="text-xl font-semibold text-gray-900">Users</h1>
@@ -67,7 +76,7 @@ export default function Users() {
           {user?.role === "admin" && (
             <Link
               to="/dashboard/users/add_new_user"
-              className="inline-flex items-center justify-center rounded-md border border-transparent bg-violet-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 sm:w-auto"
+              className="inline-flex items-center justify-center rounded-md border border-transparent bg-green-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 sm:w-auto"
             >
               Add user
             </Link>
@@ -80,7 +89,7 @@ export default function Users() {
           placeholder="Search users"
           value={searchTerm}
           onChange={handleSearch}
-          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-violet-500 focus:border-violet-500 sm:text-sm"
+          className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-green-500 focus:border-green-500 sm:text-sm"
         />
       </div>
       <div className="mt-8 flex flex-col">
@@ -123,7 +132,12 @@ export default function Users() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-200 bg-white">
-                  <TableBody users={currentUsers} handleDelete={handleDelete} role={user?.role} />
+                  <TableBody
+                    users={currentUsers}
+                    handleEdit={handleEdit}
+                    handleDelete={handleDelete}
+                    role={user?.role}
+                  />
                 </tbody>
               </table>
             </div>

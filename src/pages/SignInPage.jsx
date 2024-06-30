@@ -53,7 +53,7 @@ export default function SignInPage() {
                 Not a member?{" "}
                 <a
                   href="#"
-                  className="font-semibold text-violet-600 hover:text-violet-500"
+                  className="font-semibold text-green-600 hover:text-green-500"
                 >
                   Contact Support
                 </a>
@@ -82,7 +82,7 @@ export default function SignInPage() {
                         className={`block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 ${
                           inputError
                             ? "ring-red-500"
-                            : "ring-gray-300 focus:ring-violet-600"
+                            : "ring-gray-300 focus:ring-green-600"
                         }`}
                       />
                     </div>
@@ -107,7 +107,7 @@ export default function SignInPage() {
                         className={`block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 ${
                           inputError
                             ? "ring-red-500"
-                            : "ring-gray-300 focus:ring-violet-600"
+                            : "ring-gray-300 focus:ring-green-600"
                         }`}
                       />
                     </div>
@@ -119,7 +119,7 @@ export default function SignInPage() {
                         id="remember-me"
                         name="remember-me"
                         type="checkbox"
-                        className="h-4 w-4 rounded border-gray-300 text-violet-600 focus:ring-violet-600"
+                        className="h-4 w-4 rounded border-gray-300 text-green-600 focus:ring-green-600"
                       />
                       <label
                         htmlFor="remember-me"
@@ -132,7 +132,7 @@ export default function SignInPage() {
                     <div className="text-sm leading-6">
                       <a
                         href="#"
-                        className="font-semibold text-violet-600 hover:text-violet-500"
+                        className="font-semibold text-green-600 hover:text-green-500"
                       >
                         Forgot password?
                       </a>
@@ -142,7 +142,7 @@ export default function SignInPage() {
                   <div>
                     <button
                       type="submit"
-                      className="flex w-full justify-center rounded-md bg-violet-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-violet-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-600"
+                      className="flex w-full justify-center rounded-md bg-green-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
                       disabled={loading}
                     >
                       {loading ? (

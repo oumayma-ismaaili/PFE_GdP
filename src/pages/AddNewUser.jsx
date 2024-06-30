@@ -115,7 +115,7 @@ export default function AddNewUser() {
                       name={field.name}
                       id={field.id}
                       autoComplete={field.autoComplete}
-                      className="block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
+                      className="block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 sm:text-sm"
                       onChange={handleInputChange}
                       value={formValues[field.name] || ""}
                     />
@@ -134,7 +134,7 @@ export default function AddNewUser() {
                     type="date"
                     name="birth_date"
                     id="birthdate"
-                    className="block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
+                    className="block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 sm:text-sm"
                     onChange={handleInputChange}
                     value={formValues.birth_date}
                   />
@@ -151,7 +151,7 @@ export default function AddNewUser() {
                   <select
                     id="role"
                     name="role"
-                    className="mt-1 block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
+                    className="mt-1 block w-full max-w-lg rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 sm:text-sm"
                     onChange={handleInputChange}
                     value={formValues.role}
                   >
@@ -174,14 +174,14 @@ export default function AddNewUser() {
           <div className="flex justify-end">
             <Link
               to="/dashboard/users"
-              className="rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2"
+              className="rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
               onClick={handleReset}
             >
               Cancel
             </Link>
             <button
               type="submit"
-              className="ml-3 inline-flex justify-center rounded-md border border-transparent bg-violet-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2"
+              className="ml-3 inline-flex justify-center rounded-md border border-transparent bg-green-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
             >
               {loading ? (
                 <svg id="svg" className="h-5 w-5" viewBox="25 25 50 50">

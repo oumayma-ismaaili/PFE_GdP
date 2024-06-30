@@ -33,7 +33,7 @@ export default function AlertLayout({ data, showAlert, setShowAlert }) {
                   <div className="ml-4 flex flex-shrink-0">
                     <button
                       type="button"
-                      className="inline-flex rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2"
+                      className="inline-flex rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
                       onClick={() => {
                         setShowAlert(null);
                       }}

@@ -8,12 +8,14 @@ import { v4 as uuidv4 } from "uuid";
 import AlertLayout from "../layouts/AlertLayouts";
 import { alertInfos } from "../data/AlertInfo";
 import { Link } from "react-router-dom";
+import ProjectLeaderCombobox from "../layouts/ProjectLeaderCombobox";
 
 export default function AddNewProject() {
   const { user } = useContext(UserAuthContext);
   const [team, setTeam] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showAlert, setShowAlert] = useState(null);
+  const [leader, setLeader] = useState(null);
   const formRef = useRef();
 
   const handleRemove = (userId) => {
@@ -60,6 +62,7 @@ export default function AddNewProject() {
       delay: formData.get("delay-date"),
       team: team.map((person) => person.CIN),
       created_by: user?.CIN,
+      leader: leader.id,
     };
 
     // Save to Supabase
@@ -150,8 +153,7 @@ export default function AddNewProject() {
                   type="text"
                   name="project-name"
                   id="project-name"
-                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
-                  defaultValue="Project Nero"
+                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 sm:text-sm"
                 />
               </div>
             </div>
@@ -173,7 +175,7 @@ export default function AddNewProject() {
                     name="repository-link"
                     id="repository-link"
                     autoComplete="repository-link"
-                    className="block w-full min-w-0 flex-1 rounded-none rounded-r-md border-gray-300 focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
+                    className="block w-full min-w-0 flex-1 rounded-none rounded-r-md border-gray-300 focus:border-green-500 focus:ring-green-500 sm:text-sm"
                   />
                 </div>
               </div>
@@ -196,7 +198,7 @@ export default function AddNewProject() {
                     name="files-link"
                     id="files-link"
                     autoComplete="files-link"
-                    className="block w-full min-w-0 flex-1 rounded-none rounded-r-md border-gray-300 focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
+                    className="block w-full min-w-0 flex-1 rounded-none rounded-r-md border-gray-300 focus:border-green-500 focus:ring-green-500 sm:text-sm"
                   />
                 </div>
               </div>
@@ -214,13 +216,31 @@ export default function AddNewProject() {
                   id="description"
                   name="description"
                   rows={3}
-                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
+                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 sm:text-sm"
                   defaultValue=""
                 />
               </div>
             </div>
 
             <div className="space-y-2">
+              <div className="space-y-1">
+                <label
+                  htmlFor="add-team-members"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Select the Project Manager
+                </label>
+                <p id="add-team-members-helper" className="sr-only">
+                  Search by email address
+                </p>
+                <div className="flex">
+                  <ProjectLeaderCombobox
+                    setSelectedPerson={setLeader}
+                    selectedPerson={leader}
+                  />
+                </div>
+              </div>
+
               <div className="space-y-1">
                 <label
                   htmlFor="add-team-members"
@@ -284,20 +304,20 @@ export default function AddNewProject() {
                 type="date"
                 name="delay-date"
                 id="delay-date"
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 sm:text-sm"
               />
             </div>
 
             <div className="flex justify-end">
               <Link
                 to="/dashboard/projects"
-                className="rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2"
+                className="rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
               >
                 Cancel
               </Link>
               <button
                 type="submit"
-                className="ml-3 inline-flex justify-center rounded-md border border-transparent bg-violet-500 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-violet-600 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2"
+                className="ml-3 inline-flex justify-center rounded-md border border-transparent bg-green-500 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
                 disabled={isLoading}
               >
                 {isLoading ? (

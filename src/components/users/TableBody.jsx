@@ -1,6 +1,17 @@
 import React from "react";
 
-const TableBody = ({ users, handleDelete, role }) => {
+const TableBody = ({ users, handleEdit, handleDelete, role }) => {
+  const getBadgeClass = (role) => {
+    switch (role) {
+      case "Developer":
+        return "bg-sky-100 text-sky-800";
+      case "Admin":
+        return "bg-green-100 text-green-800";
+      default:
+        return "bg-yellow-100 text-yellow-800";
+    }
+  };
+
   return (
     <>
       {users.map((user) => (
@@ -27,20 +38,21 @@ const TableBody = ({ users, handleDelete, role }) => {
             <div className="text-gray-500">{user.city}</div>
           </td>
           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-            <span className="inline-flex rounded-full bg-green-100 px-2 text-xs font-semibold leading-5 text-green-800">
-              Active
+            <span
+              className={`inline-flex rounded-full px-2 text-xs font-semibold leading-5 ${getBadgeClass(
+                user.role
+              )}`}
+            >
+              {user.role}
             </span>
           </td>
-          <td className="whitespace-nowrap capitalize px-3 py-4 text-sm text-gray-500">
-            {user.role}
-          </td>
-          {role == "admin" && (
+          {true && (
             <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
               <button
-                onClick={() => handleDelete(user.email)}
-                className="text-red-600 hover:text-red-900"
+                className="text-green-600 hover:text-green-900"
+                onClick={() => handleEdit(user.id)}
               >
-                Delete<span className="sr-only">, {user.name}</span>
+                Edit<span className="sr-only">, {user.name}</span>
               </button>
             </td>
           )}

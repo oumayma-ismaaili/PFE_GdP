@@ -1,12 +1,13 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { PlusIcon } from "@heroicons/react/20/solid";
 import { supabase } from "../../config/supabase/supabaseClient";
 import { FaGithub } from "react-icons/fa";
 import { FaRegFolderOpen } from "react-icons/fa6";
+import { UserAuthContext } from "../../App";
 
 export default function EditProject({ project_id, open, setOpen }) {
+  const { save, setSave } = useContext(UserAuthContext);
   const [project, setProject] = useState({
     name: "",
     description: "",
@@ -76,6 +77,22 @@ export default function EditProject({ project_id, open, setOpen }) {
       console.log("Project updated successfully:", data);
       setOpen(false); // Close the modal after successful update
     }
+    setSave(!save);
+  };
+
+  const handleDelete = async () => {
+    const { error } = await supabase
+      .from("projects")
+      .delete()
+      .eq("id", project_id);
+
+    if (error) {
+      console.error("Error deleting project:", error);
+    } else {
+      console.log("Project deleted successfully");
+      setOpen(false); // Close the modal after successful delete
+    }
+    setSave(!save);
   };
 
   return (
@@ -101,7 +118,7 @@ export default function EditProject({ project_id, open, setOpen }) {
                     onSubmit={handleSubmit}
                   >
                     <div className="h-0 flex-1 overflow-y-auto">
-                      <div className="bg-violet-700 py-6 px-4 sm:px-6">
+                      <div className="bg-green-700 py-6 px-4 sm:px-6">
                         <div className="flex items-center justify-between">
                           <Dialog.Title className="text-lg font-medium text-white">
                             Edit Project
@@ -109,7 +126,7 @@ export default function EditProject({ project_id, open, setOpen }) {
                           <div className="ml-3 flex h-7 items-center">
                             <button
                               type="button"
-                              className="rounded-md bg-violet-700 text-violet-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
+                              className="rounded-md bg-green-700 text-green-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
                               onClick={() => setOpen(false)}
                             >
                               <span className="sr-only">Close panel</span>
@@ -121,7 +138,7 @@ export default function EditProject({ project_id, open, setOpen }) {
                           </div>
                         </div>
                         <div className="mt-1">
-                          <p className="text-sm text-violet-300">
+                          <p className="text-sm text-green-300">
                             Edit the information below to update your project.
                           </p>
                         </div>
@@ -141,7 +158,7 @@ export default function EditProject({ project_id, open, setOpen }) {
                                   type="text"
                                   name="project-name"
                                   id="project-name"
-                                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
+                                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 sm:text-sm"
                                   value={project.name}
                                   onChange={(e) =>
                                     setProject({
@@ -164,7 +181,7 @@ export default function EditProject({ project_id, open, setOpen }) {
                                   id="description"
                                   name="description"
                                   rows={6}
-                                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
+                                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 sm:text-sm"
                                   value={project.description}
                                   onChange={(e) =>
                                     setProject({
@@ -190,7 +207,7 @@ export default function EditProject({ project_id, open, setOpen }) {
                                   type="text"
                                   name="repo"
                                   id="repo"
-                                  className="block w-full min-w-0 flex-1 rounded-none rounded-r-md border-gray-300 focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
+                                  className="block w-full min-w-0 flex-1 rounded-none rounded-r-md border-gray-300 focus:border-green-500 focus:ring-green-500 sm:text-sm"
                                   value={project.repo}
                                   onChange={(e) =>
                                     setProject({
@@ -216,7 +233,7 @@ export default function EditProject({ project_id, open, setOpen }) {
                                   type="text"
                                   name="files"
                                   id="files"
-                                  className="block w-full min-w-0 flex-1 rounded-none rounded-r-md border-gray-300 focus:border-violet-500 focus:ring-violet-500 sm:text-sm"
+                                  className="block w-full min-w-0 flex-1 rounded-none rounded-r-md border-gray-300 focus:border-green-500 focus:ring-green-500 sm:text-sm"
                                   value={project.files}
                                   onChange={(e) =>
                                     setProject({
@@ -245,18 +262,6 @@ export default function EditProject({ project_id, open, setOpen }) {
                                       />
                                     </span>
                                   ))}
-                                  <button
-                                    type="button"
-                                    className="inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full border-2 border-dashed border-gray-200 bg-white text-gray-400 hover:border-gray-300 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2"
-                                  >
-                                    <span className="sr-only">
-                                      Add team member
-                                    </span>
-                                    <PlusIcon
-                                      className="h-5 w-5"
-                                      aria-hidden="true"
-                                    />
-                                  </button>
                                 </div>
                               </div>
                             </div>
@@ -272,7 +277,7 @@ export default function EditProject({ project_id, open, setOpen }) {
                                       name="status"
                                       aria-describedby="status-in-progress-description"
                                       type="radio"
-                                      className="h-4 w-4 border-gray-300 text-violet-600 focus:ring-violet-500"
+                                      className="h-4 w-4 border-gray-300 text-green-600 focus:ring-green-500"
                                       checked={project.status === "in progress"}
                                       onChange={() =>
                                         setProject({
@@ -304,7 +309,7 @@ export default function EditProject({ project_id, open, setOpen }) {
                                       name="status"
                                       aria-describedby="status-in-review-description"
                                       type="radio"
-                                      className="h-4 w-4 border-gray-300 text-violet-600 focus:ring-violet-500"
+                                      className="h-4 w-4 border-gray-300 text-green-600 focus:ring-green-500"
                                       checked={project.status === "in review"}
                                       onChange={() =>
                                         setProject({
@@ -336,7 +341,7 @@ export default function EditProject({ project_id, open, setOpen }) {
                                       name="status"
                                       aria-describedby="status-completed-description"
                                       type="radio"
-                                      className="h-4 w-4 border-gray-300 text-violet-600 focus:ring-violet-500"
+                                      className="h-4 w-4 border-gray-300 text-green-600 focus:ring-green-500"
                                       checked={project.status === "completed"}
                                       onChange={() =>
                                         setProject({
@@ -368,7 +373,7 @@ export default function EditProject({ project_id, open, setOpen }) {
                                       name="status"
                                       aria-describedby="status-delivered-description"
                                       type="radio"
-                                      className="h-4 w-4 border-gray-300 text-violet-600 focus:ring-violet-500"
+                                      className="h-4 w-4 border-gray-300 text-green-600 focus:ring-green-500"
                                       checked={project.status === "delivered"}
                                       onChange={() =>
                                         setProject({
@@ -395,6 +400,15 @@ export default function EditProject({ project_id, open, setOpen }) {
                                 </div>
                               </div>
                             </fieldset>
+                            <div>
+                              <button
+                                type="button"
+                                onClick={handleDelete}
+                                className="w-full bg-red-600 text-white font-medium text-sm py-2.5 rounded-md"
+                              >
+                                Delete
+                              </button>
+                            </div>
                           </div>
                         </div>
                       </div>
@@ -402,14 +416,14 @@ export default function EditProject({ project_id, open, setOpen }) {
                     <div className="flex flex-shrink-0 justify-end px-4 py-4">
                       <button
                         type="button"
-                        className="rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2"
+                        className="rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
                         onClick={() => setOpen(false)}
                       >
                         Cancel
                       </button>
                       <button
                         type="submit"
-                        className="ml-4 inline-flex justify-center rounded-md border border-transparent bg-violet-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-violet-700 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2"
+                        className="ml-4 inline-flex justify-center rounded-md border border-transparent bg-green-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
                       >
                         Save
                       </button>

@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { UserAuthContext } from "../App";
 import Navbar from "../components/Navbar";
@@ -47,15 +47,16 @@ export default function DashboardLayou() {
   const location = useLocation();
   const current = location.pathname;
   const navigate = useNavigate();
-  const removeRightCol = ["/dashboard/users/add_new_user"].find(
-    (path) => current == path
-  );
+  const removeRightCol = [
+    "/dashboard/users/add_new_user",
+    "/dashboard/analytics",
+  ].find((path) => current == path);
 
-  // useEffect(() => {
-  //   if (!user) {
-  //     navigate("/");
-  //   }
-  // }, [user, navigate]);
+  useEffect(() => {
+    if (!user) {
+      navigate("/");
+    }
+  }, [user, navigate]);
 
   return (
     <>

@@ -2,31 +2,31 @@ import { Route, Routes } from "react-router-dom";
 import SignInPage from "./pages/SignInPage";
 import DashboardLayout from "./layouts/DashboardLayout";
 import Home from "./pages/Home";
-import Profile from "./pages/Profile";
 import { createContext, useState } from "react";
-import AddNewUser from "./pages/AddNewUser";
-import Users from "./pages/Users";
-import AddNewProject from "./pages/AddNewProject";
-import Projects from "./pages/Projects";
+import { routes } from "./routes";
+import { chartsConfig } from "./config/chart/chartsConfig";
 
 export const UserAuthContext = createContext();
+
+chartsConfig();
 
 const App = () => {
   const [user, setUser] = useState();
   const [loading, setLoading] = useState(false);
+  const [save, setSave] = useState(false);
 
   return (
     <>
-      <UserAuthContext.Provider value={{ user, setUser, loading, setLoading }}>
+      <UserAuthContext.Provider
+        value={{ user, setUser, loading, setLoading, save, setSave }}
+      >
         <Routes>
           <Route path="/" element={<SignInPage />} />
           <Route path="/dashboard" element={<DashboardLayout />}>
             <Route index element={<Home />} />
-            <Route path="profile" element={<Profile />} />
-            <Route path="users/add_new_user" element={<AddNewUser />} />
-            <Route path="projects/add_new_project" element={<AddNewProject/>} />
-            <Route path="users" element={<Users />} />
-            <Route path="projects" element={<Projects />} />
+            {routes.map((route, index) => (
+              <Route key={index} path={route.path} element={route.element} />
+            ))}
           </Route>
         </Routes>
       </UserAuthContext.Provider>

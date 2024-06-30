@@ -11,7 +11,7 @@ const Pagination = ({ usersPerPage, totalUsers, paginate, currentPage }) => {
             className={`${
               currentPage === 1
                 ? "bg-gray-300 text-gray-500"
-                : "bg-white text-gray-700 hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2"
+                : "bg-white text-gray-700 hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
             } rounded-md border border-gray-300 py-2 px-4 text-sm font-medium shadow-sm `}
           >
             Previous
@@ -24,7 +24,7 @@ const Pagination = ({ usersPerPage, totalUsers, paginate, currentPage }) => {
             className={`${
               currentPage === totalPages
                 ? "bg-gray-300 text-gray-500"
-                : "bg-white text-gray-700 hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2"
+                : "bg-white text-gray-700 hover:bg-gray-50 dark:bg-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
             } rounded-md border border-gray-300 py-2 px-4 text-sm font-medium shadow-sm `}
           >
             Next

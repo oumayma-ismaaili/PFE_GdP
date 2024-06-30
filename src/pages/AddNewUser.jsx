@@ -7,7 +7,7 @@ import { alertInfos } from "../data/AlertInfo";
 import { Link } from "react-router-dom";
 
 const roleOptions = [
-  { id: "admin", label: "Admin" },
+  { id: "Admin", label: "Admin" },
   { id: "Developer", label: "Developer" },
   { id: "Leader", label: "Leader" },
 ];

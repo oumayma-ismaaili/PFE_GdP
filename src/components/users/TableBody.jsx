@@ -46,7 +46,7 @@ const TableBody = ({ users, handleEdit, handleDelete, role }) => {
               {user.role}
             </span>
           </td>
-          {true && (
+          {role == "Admin" && (
             <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
               <button
                 className="text-green-600 hover:text-green-900"

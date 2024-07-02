@@ -5,7 +5,8 @@ import { supabase } from "../../config/supabase/supabaseClient";
 import { UserAuthContext } from "../../App";
 
 export default function EditUser({ user_id, open, setOpen }) {
-  const { setSave, save } = useContext(UserAuthContext);
+  const { setSave, save, user: contextUser } = useContext(UserAuthContext);
+  const { role } = contextUser;
   const [user, setUser] = useState({
     first_name: "",
     last_name: "",
@@ -296,13 +297,15 @@ export default function EditUser({ user_id, open, setOpen }) {
                             {/* Add more fields as necessary */}
                           </div>
                           <div>
-                            <button
-                              type="button"
-                              onClick={handleDelete}
-                              className="w-full bg-red-600 text-white font-medium text-sm py-2.5 rounded-md"
-                            >
-                              Delete
-                            </button>
+                            {role == "Admin" && (
+                              <button
+                                type="button"
+                                onClick={handleDelete}
+                                className="w-full bg-red-600 text-white font-medium text-sm py-2.5 rounded-md"
+                              >
+                                Delete
+                              </button>
+                            )}
                           </div>
                         </div>
                       </div>

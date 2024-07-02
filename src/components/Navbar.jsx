@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useContext } from "react";
 import {
   Menu,
   MenuButton,
@@ -14,14 +14,30 @@ import { MagnifyingGlassIcon } from "@heroicons/react/20/solid";
 import { Link, useLocation } from "react-router-dom";
 import { navigation, userNavigation } from "../data/navbar";
 import logo from "../assets/logo.png";
+import { UserAuthContext } from "../App";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-const Navbar = ({ user }) => {
+const Navbar = () => {
+  const { user } = useContext(UserAuthContext);
+  const { role } = user;
   const location = useLocation();
   const current = location.pathname;
+
+  const hiddenLinkIfRoleDeveloper = ["/dashboard/users", "/dashboard/projects", "/dashboard/analytics"];
+  const hiddenLinkIfRoleLeader = ["/dashboard/analytics"];
+
+  const shouldHideLink = (href) => {
+    if (role === "Developer" && hiddenLinkIfRoleDeveloper.includes(href)) {
+      return true;
+    }
+    if (role === "Leader" && hiddenLinkIfRoleLeader.includes(href)) {
+      return true;
+    }
+    return false;
+  };
 
   return (
     <Popover as="header" className="bg-mesh-gradient pb-24">
@@ -142,20 +158,22 @@ const Navbar = ({ user }) => {
               <div className="grid grid-cols-3 items-center gap-8">
                 <div className="col-span-2">
                   <nav className="flex space-x-4">
-                    {navigation.map((item) => (
-                      <Link
-                        key={item.name}
-                        to={item.href}
-                        className={classNames(
-                          current == item.href
-                            ? "text-white"
-                            : "text-gray-200",
-                          "rounded-md bg-white bg-opacity-0 px-3 py-2 text-sm font-medium hover:bg-opacity-10"
-                        )}
-                      >
-                        {item.name}
-                      </Link>
-                    ))}
+                    {navigation.map((item) =>
+                      shouldHideLink(item.href) ? null : (
+                        <Link
+                          key={item.name}
+                          to={item.href}
+                          className={classNames(
+                            current == item.href
+                              ? "text-white"
+                              : "text-gray-200",
+                            "rounded-md bg-white bg-opacity-0 px-3 py-2 text-sm font-medium hover:bg-opacity-10"
+                          )}
+                        >
+                          {item.name}
+                        </Link>
+                      )
+                    )}
                   </nav>
                 </div>
                 <div>
@@ -230,15 +248,17 @@ const Navbar = ({ user }) => {
                         </div>
                       </div>
                       <div className="mt-3 space-y-1 px-2">
-                        {navigation.map((item) => (
-                          <Link
-                            key={item.name}
-                            to={item.href}
-                            className="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-100 hover:text-gray-800"
-                          >
-                            {item.name}
-                          </Link>
-                        ))}
+                        {navigation.map((item) =>
+                          shouldHideLink(item.href) ? null : (
+                            <Link
+                              key={item.name}
+                              to={item.href}
+                              className="block rounded-md px-3 py-2 text-base font-medium text-gray-900 hover:bg-gray-100 hover:text-gray-800"
+                            >
+                              {item.name}
+                            </Link>
+                          )
+                        )}
                       </div>
                     </div>
                     <div className="pb-2 pt-4">

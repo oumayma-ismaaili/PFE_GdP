@@ -7,7 +7,8 @@ import { FaRegFolderOpen } from "react-icons/fa6";
 import { UserAuthContext } from "../../App";
 
 export default function EditProject({ project_id, open, setOpen }) {
-  const { save, setSave } = useContext(UserAuthContext);
+  const { save, setSave, user } = useContext(UserAuthContext);
+  const { role } = user;
   const [project, setProject] = useState({
     name: "",
     description: "",
@@ -401,13 +402,15 @@ export default function EditProject({ project_id, open, setOpen }) {
                               </div>
                             </fieldset>
                             <div>
-                              <button
-                                type="button"
-                                onClick={handleDelete}
-                                className="w-full bg-red-600 text-white font-medium text-sm py-2.5 rounded-md"
-                              >
-                                Delete
-                              </button>
+                              {role == "Admin" && (
+                                <button
+                                  type="button"
+                                  onClick={handleDelete}
+                                  className="w-full bg-red-600 text-white font-medium text-sm py-2.5 rounded-md"
+                                >
+                                  Delete
+                                </button>
+                              )}
                             </div>
                           </div>
                         </div>

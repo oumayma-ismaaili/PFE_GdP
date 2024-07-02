@@ -12,6 +12,7 @@ import ProjectLeaderCombobox from "../layouts/ProjectLeaderCombobox";
 
 export default function AddNewProject() {
   const { user } = useContext(UserAuthContext);
+  const { role } = user;
   const [team, setTeam] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showAlert, setShowAlert] = useState(null);
@@ -280,12 +281,12 @@ export default function AddNewProject() {
                               </span>
                             </div>
                           </div>
-                          <span
+                          <button
                             onClick={() => handleRemove(person.id)}
                             className="text-sm font-semibold text-red-500 hover:text-red-700 cursor-pointer"
                           >
                             Delete
-                          </span>
+                          </button>
                         </li>
                       )
                   )}

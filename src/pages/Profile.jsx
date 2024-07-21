@@ -1,34 +1,8 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext } from "react";
 import { UserAuthContext } from "../App";
-
-function classNames(...classes) {
-  return classes.filter(Boolean).join(" ");
-}
 
 const Profile = () => {
   const { user } = useContext(UserAuthContext);
-  const [darkMode, setDarkMode] = useState(false);
-
-  useEffect(() => {
-    const savedMode = localStorage.getItem("darkMode") === "true";
-    setDarkMode(savedMode);
-    if (savedMode) {
-      document.documentElement.classList.add("dark");
-    }
-  }, []);
-
-  const toggleDarkMode = () => {
-    setDarkMode((prevMode) => {
-      const newMode = !prevMode;
-      localStorage.setItem("darkMode", newMode);
-      if (newMode) {
-        document.documentElement.classList.add("dark");
-      } else {
-        document.documentElement.classList.remove("dark");
-      }
-      return newMode;
-    });
-  };
 
   return (
     <main className="px-4 py-16 sm:px-6 lg:flex-auto bg-white dark:bg-gray-900 w-full shadow rounded-lg">

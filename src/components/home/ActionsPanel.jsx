@@ -62,6 +62,7 @@ const ActionsPanel = () => {
   }, []);
 
   const sendEmail = useCallback(() => {
+    setLoading(true)
     if (!projects.length || !users.length || !tasks.length) return;
 
     const userProject = projects.find(
@@ -98,9 +99,11 @@ const ActionsPanel = () => {
       .then(
         (response) => {
           toast.success("Report sent successfully!");
+          setLoading(false)
         },
         (err) => {
           toast.error("Failed to send report.");
+          setLoading(false)
         }
       );
   }, [projects, users, tasks, user]);

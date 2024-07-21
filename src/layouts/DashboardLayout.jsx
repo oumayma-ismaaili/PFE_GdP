@@ -65,7 +65,7 @@ export default function DashboardLayout() {
 
               {/* Right column */}
               {!removeRightCol && (
-                <div className="grid grid-cols-1 gap-4 lg:pr-8 px-6 mx-auto">
+                <div className="grid grid-cols-1 gap-4 lg:pr-8 px-6">
                   {/* Announcements */}
                   <section aria-labelledby="announcements-title">
                     <div className="overflow-hidden rounded-lg bg-white shadow">
@@ -84,7 +84,7 @@ export default function DashboardLayout() {
                             {announcements.map((announcement) => (
                               <li
                                 key={announcement.id}
-                                className="py-2 border-b border-gray-200"
+                                className="py-2 bg-gray-50 px-4 rounded-lg ring-1 ring-gray-100 my-2"
                               >
                                 <div className="relative focus-within:ring-2 focus-within:ring-cyan-500">
                                   <p className="mt-1 text-xs mb-2 text-yellow-700 inline-block px-2 py-1 rounded-lg ring-1 ring-yellow-500 bg-yellow-50 font-semibold">
@@ -132,7 +132,7 @@ export default function DashboardLayout() {
           <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
             <div className="border-t border-gray-200 py-8 text-center text-sm text-gray-500 sm:text-left">
               <span className="block sm:inline">
-                &copy; 2021 Your Company, Inc.
+                &copy; 2024 Oumaima Ismaaili.
               </span>{" "}
               <span className="block sm:inline">All rights reserved.</span>
             </div>

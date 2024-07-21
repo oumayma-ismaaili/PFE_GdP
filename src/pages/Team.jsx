@@ -22,8 +22,6 @@ export default function Team() {
         .eq("project_id", user.project_id)
         .single();
 
-      console.log(projectData);
-
       if (projectError) {
         console.error("Error fetching project:", projectError);
         return;
@@ -36,7 +34,8 @@ export default function Team() {
         const { data: usersData, error: usersError } = await supabase
           .from("users")
           .select("*")
-          .in("CIN", teamCINs);
+          .in("CIN", teamCINs)
+          .neq("CIN", user.CIN);
 
         if (usersError) {
           console.error("Error fetching users:", usersError);

@@ -1,6 +1,7 @@
 import AddNewProject from "../pages/AddNewProject";
 import AddNewUser from "../pages/AddNewUser";
 import Analytics from "../pages/Analytics";
+import CreateAnnouncements from "../pages/CreateAnnoucements";
 import Profile from "../pages/Profile";
 import Projects from "../pages/Projects";
 import TasksCreated from "../pages/TasksCreated";
@@ -18,6 +19,7 @@ export const routes = [
   { path: "projects", element: <Projects /> },
   { path: "tasks", element: <TasksPage /> },
   { path: "valid-tasks", element: <ValidTasks /> },
+  { path: "createAnnoucements", element: <CreateAnnouncements /> },
   { path: "team", element: <Team/> },
   { path: "create-task", element: <TasksCreated /> },
   { path: "analytics", element: <Analytics /> },

@@ -8,6 +8,7 @@ import { UserAuthContext } from "../../App";
 export default function Modal() {
   const { open, setOpen, data, setData } = useContext(TaskContext);
   const { user, setSave, save } = useContext(UserAuthContext);
+  const [loading, setLoading] = useState(false);
   const cancelButtonRef = useRef(null);
   const [description, setDescription] = useState("");
   const [tasks, setTasks] = useState([]);
@@ -31,6 +32,7 @@ export default function Modal() {
   }, [data.id, save]);
 
   const handleComplete = async () => {
+    setLoading(true)
     try {
       console.log("Updating task to 'in review' for task_id:", data.task_id);
       const { error: updateError } = await supabase
@@ -52,8 +54,12 @@ export default function Modal() {
 
       setData({ ...data, completed: "in review" });
       setOpen(false);
+      setLoading(false)
+      setSave(!save);
     } catch (error) {
       console.error("Error handling task completion:", error);
+      setLoading(false)
+      setSave(!save);
     }
   };
 
@@ -133,7 +139,28 @@ export default function Modal() {
                     className="inline-flex w-full justify-center rounded-md border border-transparent bg-green-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 sm:col-start-2 sm:text-sm"
                     onClick={handleComplete}
                   >
-                    Confirm
+                    {loading ? (
+                      <svg
+                        className="animate-spin h-5 w-5 text-white"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        ></circle>
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        ></path>
+                      </svg>
+                    ) : (
+                      "Confirme"
+                    )}
                   </button>
                   <button
                     type="button"

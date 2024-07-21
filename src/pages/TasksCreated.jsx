@@ -90,35 +90,18 @@ export default function TasksCreated() {
       return;
     }
 
-    // Fetch the current tasks count for the user
-    const { data: userData, error: userFetchError } = await supabase
-      .from("users")
-      .select("tasks")
-      .eq("id", formData.user_id)
-      .single();
-
-    if (userFetchError) {
-      console.error("Error fetching user data:", userFetchError);
-      toast.error("Error fetching user data.");
-      setLoading(false);
-      return;
-    }
-
-    // Increment the tasks count
-    const newTasksCount = (userData.tasks || 0) + 1;
-
-    // Update the user record with the new tasks count
+    // Update the user's project_id field
     const { error: userUpdateError } = await supabase
       .from("users")
-      .update({ tasks: newTasksCount })
+      .update({ project_id: formData.project_id })
       .eq("id", formData.user_id);
 
     if (userUpdateError) {
-      console.error("Error updating user tasks:", userUpdateError);
-      toast.error("Error updating user tasks.");
+      console.error("Error updating user project_id:", userUpdateError);
+      toast.error("Error updating user project_id.");
       setLoading(false);
     } else {
-      toast.success("Task created successfully.");
+      toast.success("Task created and user updated successfully.");
       setFormData({
         name: "",
         description: "",
@@ -204,7 +187,7 @@ export default function TasksCreated() {
                 >
                   <option value="">Select a project</option>
                   {projects.map((project) => (
-                    <option key={project.id} value={project.id}>
+                    <option key={project.project_id} value={project.project_id}>
                       {project.name}
                     </option>
                   ))}

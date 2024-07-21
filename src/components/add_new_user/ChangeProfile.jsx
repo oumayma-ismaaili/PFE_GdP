@@ -20,7 +20,7 @@ const ChangeProfile = ({profileImg, setProfileImg}) => {
       if (error) {
         console.error("Error uploading file:", error);
       } else {
-        const publicURL = `https://bceimhdbxocuyfrmswah.supabase.co/storage/v1/object/public/images/profiles/${fileName}`;
+        const publicURL = `https://ulqgsyidxjtobqxhdrpy.supabase.co/storage/v1/object/public/images/profiles/${fileName}`;
         setProfileImg(publicURL);
       }
     }

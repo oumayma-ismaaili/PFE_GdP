@@ -9,6 +9,7 @@ import Provider from "./provider/Provider";
 
 export const UserAuthContext = createContext();
 
+
 chartsConfig();
 
 const App = () => {

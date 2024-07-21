@@ -6,8 +6,7 @@ import { Link } from "react-router-dom";
 import { UserAuthContext } from "../App";
 
 export default function Projects() {
-  const { save } = useContext(UserAuthContext);
-  const { user } = useContext(UserAuthContext);
+  const { user, save } = useContext(UserAuthContext);
   const { role, CIN } = user; // Destructure CIN from user object
   const [projects, setProjects] = useState([]);
   const [open, setOpen] = useState(false);
@@ -113,7 +112,7 @@ export default function Projects() {
             date, delay, and status.
           </p>
         </div>
-        {(role === "Admin" || role === "Leader") && (
+        {(role === "Admin") && (
           <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
             <Link
               to="/dashboard/projects/add_new_project"

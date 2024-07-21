@@ -4,7 +4,7 @@ import { personalInfoFields } from "../data/add_new_user";
 import { supabase } from "../config/supabase/supabaseClient";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 const roleOptions = [
   { id: "Admin", label: "Admin" },
@@ -25,6 +25,8 @@ export default function AddNewUser() {
   const [formValues, setFormValues] = useState(initialFormValues);
   const [profileImg, setProfileImg] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -56,6 +58,7 @@ export default function AddNewUser() {
       toast.success("User added successfully.");
     }
     setLoading(false);
+    navigate("/dashboard/users");
   };
 
   const handleReset = () => {

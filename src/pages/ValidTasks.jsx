@@ -33,7 +33,9 @@ export default function ValidTasks() {
   return (
     <div className="w-full bg-white px-6 py-12 shadow rounded-lg">
       <div className="py-6 mb-6">
-        <h1 className="text-lg font-semibold text-gray-900">Your Tasks to Accomplish</h1>
+        <h1 className="text-lg font-semibold text-gray-900">
+          Your Tasks to Accomplish
+        </h1>
         <p className="text-sm text-gray-700">
           You will find all your tasks here. Please mention if you complete any
           task.

@@ -5,6 +5,7 @@ export const navigation = [
   { name: "Tasks", href: "/dashboard/tasks" },
   { name: "My Task", href: "/dashboard/valid-tasks" },
   { name: "Projects", href: "/dashboard/projects" },
+  { name: "New Announcements", href: "/dashboard/createAnnoucements" },
   { name: "Analytics", href: "/dashboard/analytics" },
 ];
 export const userNavigation = [

@@ -47,7 +47,7 @@ export default function EditProject({ project_id, open, setOpen }) {
       console.log("Fetching team profiles for CINs:", teamCINs); // Log team CINs
       const { data, error } = await supabase
         .from("users")
-        .select("CIN, profile_img")
+        .select("*")
         .in("CIN", teamCINs);
 
       if (error) {
@@ -271,7 +271,7 @@ export default function EditProject({ project_id, open, setOpen }) {
                                       />
                                       <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full mb-2 hidden group-hover:flex flex-col items-center">
                                         <div className="relative z-10 p-2 bg-gray-800 text-white font-semibold ring-1 ring-neutral-800 text-xs rounded-md shadow-lg">
-                                          {person.CIN}
+                                          {person.first_name}{" "}{person.last_name}
                                         </div>
                                       </div>
                                     </div>

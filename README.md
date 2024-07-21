@@ -5,13 +5,7 @@
 #tasks status => #Done
 ------------
 ------------
-(2) home:
-#repo => all
-#files => all
-#analytics => projects for admins & tasks for leaders
-#settings => projects for admins & tasks for leaders
-#reports !!!  (PDF) or (email)
-#team => all
+(2) home: #Done
 
 (3) projects page (enhancement): #Done
 

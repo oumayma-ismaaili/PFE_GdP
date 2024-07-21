@@ -1,28 +1,24 @@
-#user
-fname: String
-lname: String
-id: String
-date naiss: Date
-email
-pass
-role : => admin, dev, leader
+#admin => project manager + developer
+#project manager => developer
 
-project => # en p, in r, c, d || date start, date delivery, id, name, desc, delay, team : User[]
+#annoucements => #Done
+#tasks status => #Done
+------------
+------------
+(2) home:
+#repo => all
+#files => all
+#analytics => projects for admins & tasks for leaders
+#settings => projects for admins & tasks for leaders
+#reports !!!  (PDF) or (email)
+#team => all
 
-task => # c, non c, name, desc, delay, date start, date delivery, ... 
+(3) projects page (enhancement): #Done
 
-deployement => vercel + pipline CI/CD
+(4) users (enhancement): #Done
 
+(5) tasks (enhancement): #Done
 
+(6) my tasks (enhancement): #Done
 
-
-
-
-
-valid => true => new Date().current => format => 16 juin 2024
-valid => false => n
-
-button delivered => new Date().current => format => 16 juin 2024
-
-
-
+(7) add page announcement: #NOT YET

@@ -26,8 +26,14 @@ const Navbar = () => {
   const location = useLocation();
   const current = location.pathname;
 
-  const hiddenLinkIfRoleDeveloper = ["/dashboard/users", "/dashboard/projects", "/dashboard/analytics"];
+  const hiddenLinkIfRoleDeveloper = [
+    "/dashboard/users",
+    "/dashboard/projects",
+    "/dashboard/analytics",
+    "/dashboard/tasks",
+  ];
   const hiddenLinkIfRoleLeader = ["/dashboard/analytics"];
+  const hiddenLinkIfRoleAdmin = [];
 
   const shouldHideLink = (href) => {
     if (role === "Developer" && hiddenLinkIfRoleDeveloper.includes(href)) {
@@ -36,11 +42,14 @@ const Navbar = () => {
     if (role === "Leader" && hiddenLinkIfRoleLeader.includes(href)) {
       return true;
     }
+    if (role === "Admin" && hiddenLinkIfRoleAdmin.includes(href)) {
+      return true;
+    }
     return false;
   };
 
   return (
-    <Popover as="header" className="bg-mesh-gradient pb-24">
+    <Popover as="header" className="bg-gray-900 pb-24">
       {({ open }) => (
         <>
           <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:container lg:px-8">
@@ -164,7 +173,7 @@ const Navbar = () => {
                           key={item.name}
                           to={item.href}
                           className={classNames(
-                            current == item.href
+                            current === item.href
                               ? "text-white"
                               : "text-gray-200",
                             "rounded-md bg-white bg-opacity-0 px-3 py-2 text-sm font-medium hover:bg-opacity-10"

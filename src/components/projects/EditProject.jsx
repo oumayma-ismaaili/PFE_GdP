@@ -1,6 +1,8 @@
 import { Fragment, useContext, useEffect, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { supabase } from "../../config/supabase/supabaseClient";
 import { FaGithub } from "react-icons/fa";
 import { FaRegFolderOpen } from "react-icons/fa6";
@@ -31,6 +33,7 @@ export default function EditProject({ project_id, open, setOpen }) {
 
         if (error) {
           console.error("Error fetching project:", error);
+          toast.error("Error fetching project.");
         } else {
           setProject(data);
           if (data.team && data.team.length > 0) {
@@ -40,17 +43,18 @@ export default function EditProject({ project_id, open, setOpen }) {
       }
     };
 
-    const fetchTeamProfiles = async (teamIds) => {
+    const fetchTeamProfiles = async (teamCINs) => {
+      console.log("Fetching team profiles for CINs:", teamCINs); // Log team CINs
       const { data, error } = await supabase
         .from("users")
-        .select("id, profile_img")
-        .in("CIN", teamIds);
+        .select("CIN, profile_img")
+        .in("CIN", teamCINs);
 
       if (error) {
         console.error("Error fetching team profiles:", error);
       } else {
         setTeamProfiles(data);
-        console.log(data);
+        console.log("Team profiles fetched:", data); // Log fetched data
       }
     };
 
@@ -74,9 +78,11 @@ export default function EditProject({ project_id, open, setOpen }) {
 
     if (error) {
       console.error("Error updating project:", error);
+      toast.error("Error updating project.");
     } else {
       console.log("Project updated successfully:", data);
       setOpen(false); // Close the modal after successful update
+      toast.success("Project updated successfully.");
     }
     setSave(!save);
   };
@@ -89,9 +95,11 @@ export default function EditProject({ project_id, open, setOpen }) {
 
     if (error) {
       console.error("Error deleting project:", error);
+      toast.error("Error deleting project.");
     } else {
       console.log("Project deleted successfully");
       setOpen(false); // Close the modal after successful delete
+      toast.success("Project deleted successfully.");
     }
     setSave(!save);
   };
@@ -100,7 +108,7 @@ export default function EditProject({ project_id, open, setOpen }) {
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={setOpen}>
         <div className="fixed inset-0" />
-
+        <ToastContainer />
         <div className="fixed inset-0 overflow-hidden">
           <div className="absolute inset-0 overflow-hidden">
             <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10 sm:pl-16">
@@ -252,20 +260,26 @@ export default function EditProject({ project_id, open, setOpen }) {
                               <div className="mt-2">
                                 <div className="flex space-x-2">
                                   {teamProfiles.map((person, key) => (
-                                    <span
+                                    <div
                                       key={key}
-                                      className="rounded-full hover:opacity-75"
+                                      className="relative group"
                                     >
                                       <img
                                         className="inline-block object-cover h-8 w-8 rounded-full"
                                         src={person.profile_img}
                                         alt="team"
                                       />
-                                    </span>
+                                      <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full mb-2 hidden group-hover:flex flex-col items-center">
+                                        <div className="relative z-10 p-2 bg-gray-800 text-white font-semibold ring-1 ring-neutral-800 text-xs rounded-md shadow-lg">
+                                          {person.CIN}
+                                        </div>
+                                      </div>
+                                    </div>
                                   ))}
                                 </div>
                               </div>
                             </div>
+
                             <fieldset>
                               <legend className="text-sm font-medium text-gray-900">
                                 Status
@@ -402,7 +416,7 @@ export default function EditProject({ project_id, open, setOpen }) {
                               </div>
                             </fieldset>
                             <div>
-                              {role == "Admin" && (
+                              {role === "Admin" && (
                                 <button
                                   type="button"
                                   onClick={handleDelete}

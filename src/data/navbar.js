@@ -2,6 +2,8 @@ export const navigation = [
   { name: "Home", href: "/dashboard" },
   { name: "Profile", href: "/dashboard/profile" },
   { name: "Users", href: "/dashboard/users" },
+  { name: "Tasks", href: "/dashboard/tasks" },
+  { name: "My Task", href: "/dashboard/valid-tasks" },
   { name: "Projects", href: "/dashboard/projects" },
   { name: "Analytics", href: "/dashboard/analytics" },
 ];

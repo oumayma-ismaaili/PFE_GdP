@@ -5,8 +5,8 @@ import { FaRegFolderOpen } from "react-icons/fa6";
 import { UserAuthContext } from "../App";
 import { supabase } from "../config/supabase/supabaseClient";
 import { v4 as uuidv4 } from "uuid";
-import AlertLayout from "../layouts/AlertLayouts";
-import { alertInfos } from "../data/AlertInfo";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { Link } from "react-router-dom";
 import ProjectLeaderCombobox from "../layouts/ProjectLeaderCombobox";
 
@@ -15,7 +15,6 @@ export default function AddNewProject() {
   const { role } = user;
   const [team, setTeam] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [showAlert, setShowAlert] = useState(null);
   const [leader, setLeader] = useState(null);
   const formRef = useRef();
 
@@ -47,7 +46,7 @@ export default function AddNewProject() {
     const currentDate = new Date();
 
     if (delayDate <= currentDate) {
-      alert("The delay date must be greater than the current date.");
+      toast.error("The delay date must be greater than the current date.");
       setIsLoading(false); // Set loading state to false
       return;
     }
@@ -73,13 +72,13 @@ export default function AddNewProject() {
 
     if (error) {
       console.error("Error inserting data: ", error);
-      setShowAlert("error");
+      toast.error("Error inserting data.");
       setIsLoading(false); // Set loading state to false
       return;
     }
 
+    toast.success("Project added successfully.");
     console.log("Project added successfully: ", data);
-    setShowAlert("saved");
 
     // Update projects_integrated and project_id fields for all team members
     for (let person of team) {
@@ -116,19 +115,7 @@ export default function AddNewProject() {
 
   return (
     <div className="bg-white rounded-lg px-6 shadow">
-      <div className="w-full fixed z-50 top-0 left-0">
-        <AlertLayout
-          data={
-            showAlert == "error"
-              ? alertInfos.error
-              : showAlert == "saved"
-              ? alertInfos.saved
-              : {}
-          }
-          setShowAlert={setShowAlert}
-          showAlert={showAlert}
-        />
-      </div>
+      <ToastContainer />
       <main className="px-4 pt-12 pb-12 lg:pb-16">
         <form ref={formRef} onSubmit={handleSubmit}>
           <div className="space-y-6">
@@ -322,8 +309,23 @@ export default function AddNewProject() {
                 disabled={isLoading}
               >
                 {isLoading ? (
-                  <svg id="svg" className="h-5 w-5" viewBox="25 25 50 50">
-                    <circle id="circle" r="20" cy="50" cx="50"></circle>
+                  <svg
+                    className="animate-spin h-5 w-5 text-white"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
                   </svg>
                 ) : (
                   "Save"

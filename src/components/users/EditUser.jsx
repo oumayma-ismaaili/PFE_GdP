@@ -3,6 +3,8 @@ import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { supabase } from "../../config/supabase/supabaseClient";
 import { UserAuthContext } from "../../App";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function EditUser({ user_id, open, setOpen }) {
   const { setSave, save, user: contextUser } = useContext(UserAuthContext);
@@ -26,6 +28,7 @@ export default function EditUser({ user_id, open, setOpen }) {
 
         if (error) {
           console.error("Error fetching user:", error);
+          toast.error("Error fetching user.");
         } else {
           setUser(data);
         }
@@ -51,9 +54,11 @@ export default function EditUser({ user_id, open, setOpen }) {
 
     if (error) {
       console.error("Error updating user:", error);
+      toast.error("Error updating user.");
     } else {
       console.log("User updated successfully:", data);
       setOpen(false); // Close the modal after successful update
+      toast.success("User updated successfully.");
     }
     setSave(!save);
   };
@@ -63,9 +68,11 @@ export default function EditUser({ user_id, open, setOpen }) {
 
     if (error) {
       console.error("Error deleting user:", error);
+      toast.error("Error deleting user.");
     } else {
       console.log("User deleted successfully");
       setOpen(false); // Close the modal after successful delete
+      toast.success("User deleted successfully.");
     }
 
     setSave(!save);
@@ -75,7 +82,7 @@ export default function EditUser({ user_id, open, setOpen }) {
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="relative z-10" onClose={setOpen}>
         <div className="fixed inset-0" />
-
+        <ToastContainer />
         <div className="fixed inset-0 overflow-hidden">
           <div className="absolute inset-0 overflow-hidden">
             <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10 sm:pl-16">
@@ -94,7 +101,7 @@ export default function EditUser({ user_id, open, setOpen }) {
                     onSubmit={handleSubmit}
                   >
                     <div className="h-0 flex-1 overflow-y-auto">
-                      <div className="bg-indigo-700 py-6 px-4 sm:px-6">
+                      <div className="bg-green-700 py-6 px-4 sm:px-6">
                         <div className="flex items-center justify-between">
                           <Dialog.Title className="text-lg font-medium text-white">
                             Edit User
@@ -102,7 +109,7 @@ export default function EditUser({ user_id, open, setOpen }) {
                           <div className="ml-3 flex h-7 items-center">
                             <button
                               type="button"
-                              className="rounded-md bg-indigo-700 text-indigo-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
+                              className="rounded-md bg-green-700 text-green-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
                               onClick={() => setOpen(false)}
                             >
                               <span className="sr-only">Close panel</span>
@@ -114,7 +121,7 @@ export default function EditUser({ user_id, open, setOpen }) {
                           </div>
                         </div>
                         <div className="mt-1">
-                          <p className="text-sm text-indigo-300">
+                          <p className="text-sm text-green-300">
                             Edit the information below to update the user.
                           </p>
                         </div>
@@ -134,7 +141,7 @@ export default function EditUser({ user_id, open, setOpen }) {
                                   type="text"
                                   name="first_name"
                                   id="first_name"
-                                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 sm:text-sm"
                                   value={user.first_name}
                                   onChange={(e) =>
                                     setUser({
@@ -157,7 +164,7 @@ export default function EditUser({ user_id, open, setOpen }) {
                                   type="text"
                                   name="last_name"
                                   id="last_name"
-                                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 sm:text-sm"
                                   value={user.last_name}
                                   onChange={(e) =>
                                     setUser({
@@ -180,7 +187,7 @@ export default function EditUser({ user_id, open, setOpen }) {
                                   type="email"
                                   name="email"
                                   id="email"
-                                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                  className="block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 sm:text-sm"
                                   value={user.email}
                                   onChange={(e) =>
                                     setUser({
@@ -297,7 +304,7 @@ export default function EditUser({ user_id, open, setOpen }) {
                             {/* Add more fields as necessary */}
                           </div>
                           <div>
-                            {role == "Admin" && (
+                            {role === "Admin" && (
                               <button
                                 type="button"
                                 onClick={handleDelete}
@@ -313,14 +320,14 @@ export default function EditUser({ user_id, open, setOpen }) {
                     <div className="flex flex-shrink-0 justify-end px-4 py-4">
                       <button
                         type="button"
-                        className="rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        className="rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
                         onClick={() => setOpen(false)}
                       >
                         Cancel
                       </button>
                       <button
                         type="submit"
-                        className="ml-4 inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                        className="ml-4 inline-flex justify-center rounded-md border border-transparent bg-green-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
                       >
                         Save
                       </button>

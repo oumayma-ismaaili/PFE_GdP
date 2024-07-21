@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import { createContext, useState } from "react";
 import { routes } from "./routes";
 import { chartsConfig } from "./config/chart/chartsConfig";
+import Provider from "./provider/Provider";
 
 export const UserAuthContext = createContext();
 
@@ -16,7 +17,7 @@ const App = () => {
   const [save, setSave] = useState(false);
 
   return (
-    <>
+    <Provider>
       <UserAuthContext.Provider
         value={{ user, setUser, loading, setLoading, save, setSave }}
       >
@@ -30,7 +31,7 @@ const App = () => {
           </Route>
         </Routes>
       </UserAuthContext.Provider>
-    </>
+    </Provider>
   );
 };
 

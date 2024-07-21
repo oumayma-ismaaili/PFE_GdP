@@ -7,15 +7,21 @@ import { UserAuthContext } from "../App";
 
 export default function Projects() {
   const { save } = useContext(UserAuthContext);
+  const { user } = useContext(UserAuthContext);
+  const { role, CIN } = user; // Destructure CIN from user object
   const [projects, setProjects] = useState([]);
   const [open, setOpen] = useState(false);
   const [projectId, setProjectId] = useState(null);
 
   useEffect(() => {
     const fetchProjects = async () => {
-      const { data: projectsData, error: projectsError } = await supabase
-        .from("projects")
-        .select("*");
+      let query = supabase.from("projects").select("*");
+
+      if (role === "Leader") {
+        query = query.eq("leader", CIN); // Filter projects where the leader is the current user
+      }
+
+      const { data: projectsData, error: projectsError } = await query;
 
       if (projectsError) {
         console.error("Error fetching projects:", projectsError);
@@ -89,7 +95,7 @@ export default function Projects() {
     };
 
     fetchProjects();
-  }, [save]);
+  }, [save, role, CIN]);
 
   const handleOpenEditProject = (projectId) => {
     setProjectId(projectId);
@@ -107,14 +113,16 @@ export default function Projects() {
             date, delay, and status.
           </p>
         </div>
-        <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
-          <Link
-            to="/dashboard/projects/add_new_project"
-            className="inline-flex items-center justify-center rounded-md border border-transparent bg-green-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 sm:w-auto"
-          >
-            Add project
-          </Link>
-        </div>
+        {(role === "Admin" || role === "Leader") && (
+          <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
+            <Link
+              to="/dashboard/projects/add_new_project"
+              className="inline-flex items-center justify-center rounded-md border border-transparent bg-green-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 sm:w-auto"
+            >
+              Add project
+            </Link>
+          </div>
+        )}
       </div>
       <div className="-mx-4 mt-8 overflow-hidden shadow ring-1 ring-black ring-opacity-5 sm:-mx-6 md:mx-0 md:rounded-lg">
         <table className="min-w-full divide-y divide-gray-300">
@@ -185,12 +193,14 @@ export default function Projects() {
                   {GetStatusBadge(project.status)}
                 </td>
                 <td className="whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
-                  <button
-                    onClick={() => handleOpenEditProject(project.id)}
-                    className="text-green-600 hover:text-green-900"
-                  >
-                    Edit<span className="sr-only">, {project.name}</span>
-                  </button>
+                  {role === "Admin" && (
+                    <button
+                      onClick={() => handleOpenEditProject(project.id)}
+                      className="text-green-600 hover:text-green-900"
+                    >
+                      Edit<span className="sr-only">, {project.name}</span>
+                    </button>
+                  )}
                 </td>
               </tr>
             ))}

@@ -7,7 +7,7 @@ import { UserAuthContext } from "../App";
 import EditUser from "../components/users/EditUser";
 
 export default function Users() {
-  const { user, save} = useContext(UserAuthContext);
+  const { user, save } = useContext(UserAuthContext);
   const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -116,12 +116,6 @@ export default function Users() {
                       className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
                     >
                       Status
-                    </th>
-                    <th
-                      scope="col"
-                      className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900"
-                    >
-                      Role
                     </th>
                     <th
                       scope="col"

@@ -11,7 +11,7 @@ export default function UserCombobox({ team, setTeam }) {
     // Fetch users from Supabase table 'users'
     async function fetchUsers() {
       try {
-        const { data, error } = await supabase.from("users").select("*").eq("role", "Developer");;
+        const { data, error } = await supabase.from("users").select("*");
         if (error) {
           throw error;
         }

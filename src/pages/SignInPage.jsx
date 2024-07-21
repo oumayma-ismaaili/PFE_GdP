@@ -157,7 +157,7 @@ export default function SignInPage() {
 
                   <div className="relative w-full h-8 mt-8">
                     {error && (
-                      <div className="text-sm text-white font-semibold mt-4 text-center bg-red-600 py-4 rounded-lg">
+                      <div className="text-sm px-8 text-white font-semibold mt-4 text-center bg-red-600 py-4 rounded-lg">
                         {error}
                       </div>
                     )}

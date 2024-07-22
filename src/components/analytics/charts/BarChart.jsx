@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
 import { supabase } from "../../../config/supabase/supabaseClient";
 
-
 const BarChart = () => {
   const [chartData, setChartData] = useState({
     labels: ["January", "February", "March", "April", "May", "June", "July"],
@@ -38,9 +37,11 @@ const BarChart = () => {
         .select("created_at, status");
 
       if (error) {
-        console.error(error);
+        console.error("Error fetching projects:", error);
         return;
       }
+
+      console.log("Fetched projects:", projects);
 
       const months = ["January", "February", "March", "April", "May", "June", "July"];
       const statusCounts = {
@@ -52,7 +53,10 @@ const BarChart = () => {
       projects.forEach((project) => {
         const month = new Date(project.created_at).getMonth();
         if (month < 7) {
-          statusCounts[project.status.toLowerCase()][month]++;
+          const status = project.status.toLowerCase();
+          if (statusCounts[status]) {
+            statusCounts[status][month]++;
+          }
         }
       });
 

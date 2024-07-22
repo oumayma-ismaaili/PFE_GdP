@@ -43,23 +43,27 @@ export default function EditProject({ project_id, open, setOpen }) {
       }
     };
 
-    const fetchTeamProfiles = async (teamCINs) => {
-      console.log("Fetching team profiles for CINs:", teamCINs); // Log team CINs
-      const { data, error } = await supabase
-        .from("users")
-        .select("*")
-        .in("CIN", teamCINs);
-
-      if (error) {
-        console.error("Error fetching team profiles:", error);
-      } else {
-        setTeamProfiles(data);
-        console.log("Team profiles fetched:", data); // Log fetched data
-      }
-    };
-
     fetchProject();
   }, [project_id]);
+
+  const fetchTeamProfiles = async (teamCINs) => {
+    console.log("Fetching all user profiles and filtering for CINs:", teamCINs);
+  
+    // Fetch all users
+    const { data: allUsers, error } = await supabase
+      .from("users")
+      .select("*");
+  
+    if (error) {
+      console.error("Error fetching all user profiles:", error);
+    } else {
+      // Filter the users to get only those in the team
+      const teamProfiles = allUsers.filter(user => teamCINs.includes(user.CIN));
+      setTeamProfiles(teamProfiles);
+      console.log("Team profiles fetched and filtered:", teamProfiles); // Log filtered data
+    }
+  };
+  
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -269,7 +273,7 @@ export default function EditProject({ project_id, open, setOpen }) {
                                         src={person.profile_img}
                                         alt="team"
                                       />
-                                      <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full mb-2 hidden group-hover:flex flex-col items-center">
+                                      <div className="absolute bottom-0 left-1/2 transform w-32 -translate-x-1/2 translate-y-full mb-2 hidden group-hover:flex flex-col items-center">
                                         <div className="relative z-10 p-2 bg-gray-800 text-white font-semibold ring-1 ring-neutral-800 text-xs rounded-md shadow-lg">
                                           {person.first_name}{" "}{person.last_name}
                                         </div>
